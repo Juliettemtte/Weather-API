@@ -1,0 +1,54 @@
+<div class="card animate-slide-up" style="animation-delay: 0.1s;">
+  <h3 class="text-xl font-bold text-gray-900 mb-6">Prévisions des 12 prochaines heures</h3>
+  
+  <!-- Graphique -->
+  <div class="mb-6" style="height: 200px;">
+    <canvas #chartCanvas></canvas>
+  </div>
+
+  <!-- Liste détaillée -->
+  <div class="overflow-x-auto -mx-2">
+    <div class="flex gap-3 px-2 pb-2">
+      <div 
+        *ngFor="let hour of hourly"
+        class="flex-shrink-0 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-4 
+               min-w-[110px] hover:shadow-md transition-shadow duration-200"
+      >
+        <!-- Heure -->
+        <div class="text-sm font-medium text-gray-600 mb-2">
+          {{ formatHour(hour.time) }}
+        </div>
+        
+        <!-- Icône météo -->
+        <div class="flex justify-center mb-2">
+          <img 
+            [src]="getWeatherIcon(hour.icon)" 
+            [alt]="hour.condition"
+            class="w-12 h-12"
+          />
+        </div>
+        
+        <!-- Température -->
+        <div class="text-xl font-bold text-gray-900 text-center mb-3">
+          {{ hour.temperature | number:'1.0-1' }}°
+        </div>
+        
+        <!-- Pluie et vent -->
+        <div class="space-y-1 text-xs text-gray-600">
+          <div class="flex items-center gap-1">
+            <svg class="w-3 h-3 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+            </svg>
+            <span>{{ hour.precipitation_probability }}%</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+            <span>{{ hour.wind_speed | number:'1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

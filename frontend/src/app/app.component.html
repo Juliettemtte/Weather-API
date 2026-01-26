@@ -1,0 +1,107 @@
+<div class="min-h-screen py-8 px-4">
+  <div class="max-w-4xl mx-auto">
+    
+    <!-- Header -->
+    <header class="text-center mb-8 animate-fade-in">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
+        ☀️ Météo Express
+      </h1>
+      <p class="text-gray-600 text-lg">
+        Votre météo, claire et rapide
+      </p>
+    </header>
+
+    <!-- Barre de recherche -->
+    <div class="mb-8 animate-fade-in">
+      <app-search (citySelected)="onCitySelected($event)"></app-search>
+    </div>
+
+    <!-- Message d'erreur -->
+    <div 
+      *ngIf="error$ | async as error"
+      class="card bg-red-50 border-2 border-red-200 mb-6 animate-slide-up"
+    >
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-red-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+        </svg>
+        <div class="flex-1">
+          <h3 class="text-red-900 font-bold mb-1">Erreur</h3>
+          <p class="text-red-700">{{ error }}</p>
+        </div>
+        <button 
+          (click)="clearError()"
+          class="text-red-600 hover:text-red-800 transition-colors"
+        >
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loader -->
+    <div 
+      *ngIf="loading$ | async"
+      class="flex flex-col items-center justify-center py-20 animate-fade-in"
+    >
+      <div class="spinner mb-4"></div>
+      <p class="text-gray-600">Chargement des données météo...</p>
+    </div>
+
+    <!-- Contenu météo -->
+    <div *ngIf="(weather$ | async) as weather" class="space-y-6">
+      
+      <!-- Météo actuelle -->
+      <app-current-weather 
+        [weather]="weather.current"
+        [city]="weather.city"
+        [country]="weather.country"
+      ></app-current-weather>
+
+      <!-- Prévisions horaires -->
+      <app-hourly-forecast 
+        [hourly]="weather.hourly"
+      ></app-hourly-forecast>
+
+      <!-- Prévisions quotidiennes -->
+      <app-daily-forecast 
+        [daily]="weather.daily"
+      ></app-daily-forecast>
+
+      <!-- Info cache -->
+      <div 
+        *ngIf="weather.cached"
+        class="text-center text-sm text-gray-500 animate-fade-in"
+      >
+        <div class="flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+          </svg>
+          <span>Données en cache - Mise à jour dans {{ getTimeUntilExpiry(weather.cache_expires_at) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- État initial (pas de données) -->
+    <div 
+      *ngIf="!(loading$ | async) && !(weather$ | async) && !(error$ | async)"
+      class="text-center py-20 animate-fade-in"
+    >
+      <div class="text-6xl mb-4">🌍</div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">
+        Bienvenue sur Météo Express
+      </h2>
+      <p class="text-gray-600 mb-6">
+        Recherchez une ville ou utilisez votre position pour commencer
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-12 text-sm text-gray-500">
+      <p>Données météo fournies par OpenWeatherMap</p>
+      <p class="mt-2">© 2025 Météo Express - Météo claire et rapide</p>
+    </footer>
+
+  </div>
+</div>

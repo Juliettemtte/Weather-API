@@ -1,0 +1,58 @@
+<div class="card animate-slide-up" style="animation-delay: 0.2s;">
+  <h3 class="text-xl font-bold text-gray-900 mb-6">Prévisions sur 3 jours</h3>
+  
+  <div class="space-y-4">
+    <div 
+      *ngFor="let day of daily; let i = index"
+      class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-cyan-50 
+             rounded-xl hover:shadow-md transition-all duration-200"
+    >
+      <!-- Jour -->
+      <div class="flex-1">
+        <div class="font-bold text-gray-900 capitalize">
+          {{ getDayName(day.date) }}
+        </div>
+        <div class="text-sm text-gray-600">
+          {{ formatDate(day.date).split(' ').slice(1).join(' ') }}
+        </div>
+      </div>
+
+      <!-- Icône météo -->
+      <div class="flex-shrink-0 mx-4">
+        <img 
+          [src]="getWeatherIcon(day.icon)" 
+          [alt]="day.condition"
+          class="w-16 h-16"
+        />
+      </div>
+
+      <!-- Températures -->
+      <div class="flex items-center gap-4 flex-1 justify-end">
+        <div class="text-right">
+          <div class="flex items-center gap-2">
+            <!-- Pluie -->
+            <div class="flex items-center gap-1 text-sm text-gray-600">
+              <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+              </svg>
+              <span>{{ day.precipitation_probability }}%</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-right min-w-[100px]">
+          <div class="flex items-center justify-end gap-3">
+            <!-- Température max -->
+            <div class="text-2xl font-bold text-gray-900">
+              {{ day.temp_max | number:'1.0-1' }}°
+            </div>
+            <!-- Température min -->
+            <div class="text-xl text-gray-500">
+              {{ day.temp_min | number:'1.0-1' }}°
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
