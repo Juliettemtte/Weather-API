@@ -4,10 +4,10 @@
     <!-- Header -->
     <header class="text-center mb-8 animate-fade-in">
       <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
-        ☀️ Météo Express
+        ☀️ Weather Express
       </h1>
       <p class="text-gray-600 text-lg">
-        Votre météo, claire et rapide
+        Your weather, clear and fast
       </p>
     </header>
 
@@ -26,7 +26,7 @@
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
         </svg>
         <div class="flex-1">
-          <h3 class="text-red-900 font-bold mb-1">Erreur</h3>
+          <h3 class="text-red-900 font-bold mb-1">Error</h3>
           <p class="text-red-700">{{ error }}</p>
         </div>
         <button 
@@ -46,7 +46,7 @@
       class="flex flex-col items-center justify-center py-20 animate-fade-in"
     >
       <div class="spinner mb-4"></div>
-      <p class="text-gray-600">Chargement des données météo...</p>
+      <p class="text-gray-600">Loading weather data...</p>
     </div>
 
     <!-- Contenu météo -->
@@ -78,29 +78,43 @@
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
           </svg>
-          <span>Données en cache - Mise à jour dans {{ getTimeUntilExpiry(weather.cache_expires_at) }}</span>
+          <span>Cached data - Updates in {{ getTimeUntilExpiry(weather.cache_expires_at) }}</span>
         </div>
       </div>
     </div>
 
-    <!-- État initial (pas de données) -->
+    <!-- Initial state (no data) -->
     <div 
-      *ngIf="!(loading$ | async) && !(weather$ | async) && !(error$ | async)"
+      *ngIf="!(loading$ | async) && !(weather$ | async) && !(error$ | async) && !hasNoFavorites"
       class="text-center py-20 animate-fade-in"
     >
       <div class="text-6xl mb-4">🌍</div>
       <h2 class="text-2xl font-bold text-gray-900 mb-2">
-        Bienvenue sur Météo Express
+        Welcome to Weather Express
       </h2>
       <p class="text-gray-600 mb-6">
-        Recherchez une ville ou utilisez votre position pour commencer
+        Search for a city or use your location to get started
+      </p>
+    </div>
+
+    <!-- No favorites message -->
+    <div 
+      *ngIf="hasNoFavorites && !(loading$ | async) && !(weather$ | async)"
+      class="text-center py-20 animate-fade-in"
+    >
+      <div class="text-6xl mb-4">⭐</div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">
+        No Favorites Found
+      </h2>
+      <p class="text-gray-600 mb-6">
+        Search for a city to get started and save it as your favorite
       </p>
     </div>
 
     <!-- Footer -->
     <footer class="text-center mt-12 text-sm text-gray-500">
-      <p>Données météo fournies par OpenWeatherMap</p>
-      <p class="mt-2">© 2025 Météo Express - Météo claire et rapide</p>
+      <p>Weather data provided by OpenWeatherMap</p>
+      <p class="mt-2">© 2025 Weather Express - Clear and fast weather</p>
     </footer>
 
   </div>

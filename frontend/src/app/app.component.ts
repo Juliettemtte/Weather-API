@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
   weather$: Observable<WeatherResponse | null>;
   loading$: Observable<boolean>;
   error$: Observable<string | null>;
+  hasNoFavorites = false;
 
   constructor(public weatherService: WeatherService) {
     this.weather$ = this.weatherService.weather$;
@@ -38,7 +39,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Charger la ville favorite au démarrage
+    // Load favorite city on startup
     this.loadFavoriteCity();
   }
 
@@ -46,11 +47,10 @@ export class AppComponent implements OnInit {
     const favorite = FavoritesUtil.getFavorite();
     if (favorite) {
       this.onCitySelected(favorite.name);
+      this.hasNoFavorites = false;
     } else {
-      // Sinon, tenter la géolocalisation
-      this.weatherService.loadWeatherByGeolocation().catch(() => {
-        // Si échec, ne rien faire (l'utilisateur devra rechercher)
-      });
+      // No favorite saved - show message instead of trying geolocation
+      this.hasNoFavorites = true;
     }
   }
 

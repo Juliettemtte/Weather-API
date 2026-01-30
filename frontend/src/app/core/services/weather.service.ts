@@ -39,7 +39,7 @@ export class WeatherService {
         }),
         catchError(error => {
           this.loadingSubject.next(false);
-          const errorMsg = error.error?.detail || 'Impossible de récupérer la météo';
+          const errorMsg = error.error?.detail || 'Unable to retrieve weather data';
           this.errorSubject.next(errorMsg);
           return throwError(() => new Error(errorMsg));
         }),
@@ -66,7 +66,7 @@ export class WeatherService {
         }),
         catchError(error => {
           this.loadingSubject.next(false);
-          const errorMsg = error.error?.detail || 'Impossible de récupérer la météo';
+          const errorMsg = error.error?.detail || 'Unable to retrieve weather data';
           this.errorSubject.next(errorMsg);
           return throwError(() => new Error(errorMsg));
         }),
@@ -92,7 +92,7 @@ export class WeatherService {
     return this.http.get<any>(`${this.API_URL}/search`, { params })
       .pipe(
         catchError(error => {
-          console.error('Erreur recherche villes:', error);
+          console.error('Error searching cities:', error);
           return throwError(() => error);
         })
       );
@@ -104,23 +104,23 @@ export class WeatherService {
   getUserLocation(): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
-        reject(new Error('Géolocalisation non supportée'));
+        reject(new Error('Geolocation not supported'));
         return;
       }
       
       navigator.geolocation.getCurrentPosition(
         position => resolve(position),
         error => {
-          let message = 'Erreur de géolocalisation';
+          let message = 'Geolocation error';
           switch(error.code) {
             case error.PERMISSION_DENIED:
-              message = 'Permission de géolocalisation refusée';
+              message = 'Geolocation permission denied';
               break;
             case error.POSITION_UNAVAILABLE:
-              message = 'Position indisponible';
+              message = 'Position unavailable';
               break;
             case error.TIMEOUT:
-              message = 'Délai de géolocalisation dépassé';
+              message = 'Geolocation request timeout';
               break;
           }
           reject(new Error(message));

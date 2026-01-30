@@ -61,7 +61,7 @@ export class SearchComponent {
 
   useGeolocation(): void {
     this.weatherService.loadWeatherByGeolocation().catch(error => {
-      console.error('Erreur géolocalisation:', error);
+      console.error('Geolocation error:', error);
     });
   }
 
