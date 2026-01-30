@@ -1,76 +1,76 @@
 # 🌤️ Weather API - Backend MVP
 
-API météo centralisée avec cache intelligent Redis et normalisation des données OpenWeatherMap.
+Centralized weather API with intelligent Redis cache and OpenWeatherMap data normalization.
 
-## 🚀 Installation rapide
+## 🚀 Quick Installation
 
-### Prérequis
+### Prerequisites
 - Python 3.11+
 - Redis Server
-- Clé API OpenWeatherMap (gratuite)
+- OpenWeatherMap API Key (free)
 
-### Étapes
+### Steps
 
 ```bash
-# 1. Cloner le projet
+# 1. Clone the project
 git clone <your-repo>
 cd weather-api
 
-# 2. Créer environnement virtuel
+# 2. Create virtual environment
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
-# ou
+# or
 venv\Scripts\activate  # Windows
 
-# 3. Installer dépendances
+# 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Configurer variables d'environnement
+# 4. Configure environment variables
 cp .env.example .env
-# Éditer .env et ajouter votre OPENWEATHER_API_KEY
+# Edit .env and add your OPENWEATHER_API_KEY
 
-# 5. Démarrer Redis
+# 5. Start Redis
 redis-server
 
-# 6. Lancer l'API
+# 6. Launch the API
 uvicorn app.main:app --reload
 ```
 
-L'API sera disponible sur `http://localhost:8000`
+The API will be available at `http://localhost:8000`
 
 ## 📡 Endpoints
 
 ### `GET /api/weather`
-Récupère les données météo
+Get weather data
 
-**Paramètres:**
-- `city` (string, optionnel): Nom de la ville
-- `lat` (float, optionnel): Latitude
-- `lon` (float, optionnel): Longitude
+**Parameters:**
+- `city` (string, optional): City name
+- `lat` (float, optional): Latitude
+- `lon` (float, optional): Longitude
 
-**Exemple:**
+**Example:**
 ```bash
 curl "http://localhost:8000/api/weather?city=Paris"
 curl "http://localhost:8000/api/weather?lat=48.8566&lon=2.3522"
 ```
 
 ### `GET /api/search`
-Autocomplétion de villes
+City autocomplete
 
-**Paramètres:**
-- `q` (string, requis): Terme de recherche (min 2 caractères)
-- `limit` (int, optionnel): Nombre de résultats (1-10, défaut 5)
+**Parameters:**
+- `q` (string, required): Search term (min 2 characters)
+- `limit` (int, optional): Number of results (1-10, default 5)
 
-**Exemple:**
+**Example:**
 ```bash
 curl "http://localhost:8000/api/search?q=Par&limit=5"
 ```
 
 ### `GET /health`
-Vérification de santé
+Health check
 
 ### `DELETE /api/cache`
-Supprime une entrée du cache
+Delete cache entry
 
 ## 🏗️ Architecture
 
@@ -84,21 +84,21 @@ Redis Cache (TTL: 30min)
 OpenWeatherMap API
 ```
 
-## ⚡ Performances
+## ⚡ Performance
 
 - **Cache HIT:** < 50ms
-- **Cache MISS:** 200-500ms (selon API externe)
-- **TTL Cache:** 30 minutes (configurable)
+- **Cache MISS:** 200-500ms (depending on external API)
+- **Cache TTL:** 30 minutes (configurable)
 
 ## 🔧 Configuration
 
-Fichier `.env`:
-- `OPENWEATHER_API_KEY`: Votre clé API
-- `REDIS_HOST`: Hôte Redis (défaut: localhost)
-- `CACHE_TTL`: Durée du cache en secondes (défaut: 1800)
-- `CORS_ORIGINS`: Origines autorisées (séparées par virgules)
+`.env` file:
+- `OPENWEATHER_API_KEY`: Your API key
+- `REDIS_HOST`: Redis host (default: localhost)
+- `CACHE_TTL`: Cache duration in seconds (default: 1800)
+- `CORS_ORIGINS`: Allowed origins (comma-separated)
 
-## 📊 Format de réponse
+## 📊 Response Format
 
 ```json
 {
@@ -119,52 +119,54 @@ Fichier `.env`:
 }
 ```
 
-## 🧪 Tests
+## 🧪 Testing
 
 ```bash
-# Test endpoint principal
+# Test main endpoint
 curl "http://localhost:8000/api/weather?city=Paris"
 
-# Vérifier la santé
+# Check health
 curl "http://localhost:8000/health"
 ```
 
-## 📝 Obtenir une clé API OpenWeatherMap
+## 📝 Get an OpenWeatherMap API Key
 
-1. Créer un compte sur https://openweathermap.org/
-2. Aller dans API Keys
-3. Copier la clé et l'ajouter dans `.env`
+1. Create an account at https://openweathermap.org/
+2. Go to API Keys
+3. Copy the key and add it to `.env`
 
-## 🐳 Docker (optionnel)
+## 🐳 Docker (optional)
 
 ```bash
-# Démarrer Redis avec Docker
+# Start Redis with Docker
 docker run -d -p 6379:6379 redis:alpine
 ```
 
-## 🛠️ Développement
+## 🛠️ Development
 
 ```bash
-# Mode développement avec rechargement auto
+# Development mode with auto-reload
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
-# Documentation interactive
-# Ouvrir http://localhost:8000/docs
+# Interactive documentation
+# Open http://localhost:8000/docs
 ```
 
-## 📈 Prochaines étapes (post-MVP)
+## 📈 Next Steps (post-MVP)
 
-- [ ] Rate limiting par IP
-- [ ] Métriques et monitoring (Prometheus)
-- [ ] Tests unitaires (pytest)
-- [ ] Support multi-sources météo
-- [ ] Compression des réponses
-- [ ] Docker Compose pour déploiement
+- [ ] Rate limiting per IP
+- [ ] Metrics and monitoring (Prometheus)
+- [ ] Unit tests (pytest)
+- [ ] Multi-source weather support
+- [ ] Response compression
+- [ ] Docker Compose for deployment
 
--> 3 windows
- - source venv/bin/activate -> redis-server 
- - source venv/bin/activate -> uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
- - source venv/bin/activate -> curl "http://localhost:8000/api/weather?city=Paris" | jq
+## 💡 Development Workflow
 
--> quit redis / uvicorn = CTRL - C
--> quit venv = deactivate
+-> 3 terminal windows:
+ - `source venv/bin/activate` -> `redis-server`
+ - `source venv/bin/activate` -> `uvicorn app.main:app --reload --host 0.0.0.0 --port 8000`
+ - `source venv/bin/activate` -> `curl "http://localhost:8000/api/weather?city=Paris" | jq`
+
+-> quit redis / uvicorn = CTRL + C
+-> quit venv = `deactivate`

@@ -2,9 +2,9 @@ from datetime import datetime
 from typing import Dict, List
 
 def normalize_weather_data(current_data: dict, forecast_data: dict) -> dict:
-    """Normalise les données OpenWeatherMap dans notre format standardisé"""
+    """Normalize OpenWeatherMap data into our standardized format"""
     
-    # Extraction données actuelles
+    # Extract current weather data
     current = {
         'temperature': round(current_data['main']['temp'], 1),
         'feels_like': round(current_data['main']['feels_like'], 1),
@@ -13,11 +13,11 @@ def normalize_weather_data(current_data: dict, forecast_data: dict) -> dict:
         'icon': current_data['weather'][0]['icon'],
         'humidity': current_data['main']['humidity'],
         'wind_speed': round(current_data['wind']['speed'] * 3.6, 1),  # m/s -> km/h
-        'precipitation_probability': 0,  # Pas dispo dans current weather
+        'precipitation_probability': 0,  # Not available in current weather
         'timestamp': datetime.utcnow()
     }
     
-    # Prévisions horaires (12 prochaines heures)
+    # Hourly forecasts (next 12 hours)
     hourly = []
     for item in forecast_data['list'][:12]:
         hourly.append({
@@ -29,7 +29,7 @@ def normalize_weather_data(current_data: dict, forecast_data: dict) -> dict:
             'wind_speed': round(item['wind']['speed'] * 3.6, 1)
         })
     
-    # Prévisions quotidiennes (3 jours)
+    # Daily forecasts (3 days)
     daily = _aggregate_daily_forecasts(forecast_data['list'][:24])
     
     return {
@@ -45,7 +45,7 @@ def normalize_weather_data(current_data: dict, forecast_data: dict) -> dict:
     }
 
 def _aggregate_daily_forecasts(forecast_list: List[dict]) -> List[dict]:
-    """Agrège les prévisions 3h en prévisions quotidiennes"""
+    """Aggregate 3-hour forecasts into daily forecasts"""
     daily_data = {}
     
     for item in forecast_list:
@@ -67,12 +67,12 @@ def _aggregate_daily_forecasts(forecast_list: List[dict]) -> List[dict]:
         daily_data[date_key]['precip_probs'].append(item.get('pop', 0) * 100)
         daily_data[date_key]['humidity'].append(item['main']['humidity'])
     
-    # Transformer en liste de prévisions quotidiennes
+    # Transform into a list of daily forecasts
     daily_forecasts = []
     for date, data in sorted(daily_data.items())[:3]:
-        # Condition dominante (la plus fréquente)
+        # Dominant condition (most frequent)
         most_common_condition = max(set(data['conditions']), key=data['conditions'].count)
-        # Icône correspondante (prendre celle de midi si possible)
+        # Corresponding icon (take the one at noon if possible)
         mid_idx = len(data['icons']) // 2
         icon = data['icons'][mid_idx] if data['icons'] else '01d'
         

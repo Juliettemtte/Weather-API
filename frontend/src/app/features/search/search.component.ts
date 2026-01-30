@@ -82,7 +82,7 @@ export class SearchComponent {
   }
 
   onBlur(): void {
-    // Délai pour permettre le clic sur un résultat
+    // Delay hiding results to allow click event to register
     setTimeout(() => {
       this.showResults = false;
     }, 200);

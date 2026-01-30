@@ -19,7 +19,7 @@ export class HourlyForecastComponent implements OnInit {
   private chart: Chart | null = null;
 
   ngOnInit(): void {
-    // Le graphique sera créé après la vue
+    // Graph will be created in ngAfterViewInit
   }
 
   ngAfterViewInit(): void {
@@ -56,7 +56,7 @@ export class HourlyForecastComponent implements OnInit {
       data: {
         labels: labels,
         datasets: [{
-          label: 'Température (°C)',
+          label: 'Temperature (°C)',
           data: temperatures,
           borderColor: '#0ea5e9',
           backgroundColor: 'rgba(14, 165, 233, 0.1)',

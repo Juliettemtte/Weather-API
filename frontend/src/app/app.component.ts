@@ -69,7 +69,7 @@ export class AppComponent implements OnInit {
     const expiry = new Date(expiryDate);
     const diffMinutes = Math.floor((expiry.getTime() - now.getTime()) / 60000);
     
-    if (diffMinutes < 1) return 'moins d\'1 minute';
+    if (diffMinutes < 1) return 'less than 1 minute';
     if (diffMinutes === 1) return '1 minute';
     return `${diffMinutes} minutes`;
   }

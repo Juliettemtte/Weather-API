@@ -9,14 +9,14 @@ from app.models import WeatherResponse, ErrorResponse
 from app.services.cache_service import cache_service
 from app.services.weather_service import weather_service
 
-# Initialisation FastAPI
+# Initialization of the FastAPI application
 app = FastAPI(
     title="Weather API",
-    description="API météo centralisée avec cache intelligent et normalisation des données",
+    description="Centralized weather API with intelligent caching and data normalization",
     version="1.0.0"
 )
 
-# Configuration CORS
+# CORS Configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins_list,
@@ -27,7 +27,7 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    """Endpoint de santé"""
+    """Health endpoint"""
     return {
         "service": "Weather API",
         "status": "running",
@@ -37,7 +37,7 @@ def read_root():
 
 @app.get("/health")
 def health_check():
-    """Vérification de santé complète"""
+    """Comprehensive health check"""
     redis_status = cache_service.health_check()
     return {
         "status": "healthy" if redis_status else "degraded",
@@ -47,41 +47,41 @@ def health_check():
 
 @app.get("/api/weather", response_model=WeatherResponse)
 def get_weather(
-    city: Optional[str] = Query(None, description="Nom de la ville"),
+    city: Optional[str] = Query(None, description="City name"),
     lat: Optional[float] = Query(None, description="Latitude"),
     lon: Optional[float] = Query(None, description="Longitude")
 ):
     """
-    Récupère les données météo pour une ville ou des coordonnées.
+    Retrieves weather data for a city or coordinates.
     
-    - **city**: Nom de la ville (ex: Paris, London)
-    - **lat**: Latitude (ex: 48.8566)
-    - **lon**: Longitude (ex: 2.3522)
+    - **city**: City name (e.g., Paris, London)
+    - **lat**: Latitude (e.g., 48.8566)
+    - **lon**: Longitude (e.g., 2.3522)
     
-    Retourne les données actuelles, prévisions horaires (12h) et quotidiennes (3 jours).
+    Returns current data, hourly forecasts (12h), and daily forecasts (3 days).
     """
     start_time = time.time()
     
-    # Validation des paramètres
+    # Parameter validation
     if not city and (lat is None or lon is None):
         raise HTTPException(
             status_code=400,
-            detail="Vous devez fournir soit 'city', soit 'lat' et 'lon'"
+            detail="You must provide either 'city' or both 'lat' and 'lon'"
         )
     
     try:
-        # Vérification du cache
+        # Cache check
         cached_data = cache_service.get(city=city, lat=lat, lon=lon)
         
         if cached_data:
-            print(f"✅ Cache HIT - Temps: {(time.time() - start_time) * 1000:.0f}ms")
+            print(f"✅ Cache HIT - Time: {(time.time() - start_time) * 1000:.0f}ms")
             return WeatherResponse(**cached_data)
         
-        # Cache MISS - Appel API
-        print(f"⚠️  Cache MISS - Appel API externe...")
+        # Cache MISS - External API call
+        print(f"⚠️  Cache MISS - External API call...")
         weather_data = weather_service.get_weather(city=city, lat=lat, lon=lon)
         
-        # Sauvegarde dans le cache
+        # Save to cache
         cache_service.set(
             weather_data.model_dump(mode='json'),
             city=weather_data.city if city else None,
@@ -90,26 +90,26 @@ def get_weather(
         )
         
         elapsed = (time.time() - start_time) * 1000
-        print(f"✅ Données récupérées et mises en cache - Temps: {elapsed:.0f}ms")
+        print(f"✅ Data retrieved and cached - Time: {elapsed:.0f}ms")
         
         return weather_data
         
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
-        print(f"❌ Erreur: {e}")
-        raise HTTPException(status_code=500, detail=f"Erreur serveur: {str(e)}")
+        print(f"❌ Error: {e}")
+        raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
 
 @app.get("/api/search")
 def search_cities(
-    q: str = Query(..., min_length=2, description="Terme de recherche"),
-    limit: int = Query(5, ge=1, le=10, description="Nombre de résultats")
+    q: str = Query(..., min_length=2, description="Search term"),
+    limit: int = Query(5, ge=1, le=10, description="Number of results")
 ):
     """
-    Recherche de villes pour autocomplétion.
+    City search for autocomplete.
     
-    - **q**: Terme de recherche (minimum 2 caractères)
-    - **limit**: Nombre maximum de résultats (1-10)
+    - **q**: Search term (minimum 2 characters)
+    - **limit**: Maximum number of results (1-10)
     """
     try:
         cities = weather_service.search_city(q, limit)
@@ -128,19 +128,19 @@ def clear_cache(
     lon: Optional[float] = Query(None)
 ):
     """
-    Supprime une entrée du cache (utile pour forcer le rafraîchissement).
+    Deletes a cache entry (useful for forcing a refresh).
     """
     if not city and (lat is None or lon is None):
         raise HTTPException(
             status_code=400,
-            detail="Vous devez fournir soit 'city', soit 'lat' et 'lon'"
+            detail="You must provide either 'city' or both 'lat' and 'lon'"
         )
     
     try:
         cache_service.delete(city=city, lat=lat, lon=lon)
         return {
             "status": "success",
-            "message": "Cache supprimé avec succès"
+            "message": "Cache successfully deleted"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

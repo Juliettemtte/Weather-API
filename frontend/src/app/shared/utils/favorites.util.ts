@@ -4,7 +4,7 @@ const STORAGE_KEY = 'weather_favorite_city';
 
 export class FavoritesUtil {
   /**
-   * Sauvegarde la ville favorite
+   * Save favorite city
    */
   static saveFavorite(city: string, country: string): void {
     const favorite: FavoriteCity = {
@@ -16,7 +16,7 @@ export class FavoritesUtil {
   }
 
   /**
-   * Récupère la ville favorite
+   * Get favorite city
    */
   static getFavorite(): FavoriteCity | null {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -30,14 +30,14 @@ export class FavoritesUtil {
   }
 
   /**
-   * Supprime la ville favorite
+   * Remove favorite city
    */
   static removeFavorite(): void {
     localStorage.removeItem(STORAGE_KEY);
   }
 
   /**
-   * Vérifie si une ville est favorite
+   * Check if city is favorite
    */
   static isFavorite(city: string): boolean {
     const favorite = this.getFavorite();

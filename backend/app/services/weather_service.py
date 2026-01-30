@@ -11,29 +11,29 @@ class WeatherService:
         self.base_url = settings.openweather_base_url
     
     def get_weather(self, city: Optional[str] = None, lat: Optional[float] = None, lon: Optional[float] = None) -> WeatherResponse:
-        """Récupère les données météo depuis OpenWeatherMap"""
+        """Retrieves weather data from OpenWeatherMap"""
         
-        # Appel API current weather
+        # Call API current weather
         current_data = self._fetch_current_weather(city, lat, lon)
         
-        # Extraction des coordonnées pour les appels suivants
+        # Extract coordinates for subsequent calls
         coords_lat = current_data['coord']['lat']
         coords_lon = current_data['coord']['lon']
         
-        # Appel API forecast (hourly + daily)
+        # Call API forecast (hourly + daily)
         forecast_data = self._fetch_forecast(coords_lat, coords_lon)
         
-        # Normalisation des données
+        # Normalize data
         normalized = normalize_weather_data(current_data, forecast_data)
         
         return WeatherResponse(**normalized)
     
     def _fetch_current_weather(self, city: Optional[str], lat: Optional[float], lon: Optional[float]) -> dict:
-        """Appel API pour météo actuelle"""
+        """Call API for current weather"""
         params = {
             'appid': self.api_key,
             'units': 'metric',
-            'lang': 'fr'
+            'lang': 'en'
         }
         
         if city:
@@ -42,39 +42,39 @@ class WeatherService:
             params['lat'] = lat
             params['lon'] = lon
         else:
-            raise ValueError("City ou coordonnées requises")
+            raise ValueError("City or coordinates required")
         
         url = f"{self.base_url}/weather"
         response = requests.get(url, params=params, timeout=5)
         
         if response.status_code == 404:
-            raise ValueError(f"Ville '{city}' introuvable")
+            raise ValueError(f"City '{city}' not found")
         elif response.status_code != 200:
-            raise Exception(f"Erreur API OpenWeather: {response.status_code}")
+            raise Exception(f"OpenWeather API error: {response.status_code}")
         
         return response.json()
     
     def _fetch_forecast(self, lat: float, lon: float) -> dict:
-        """Appel API pour prévisions horaires et quotidiennes"""
+        """Call API for hourly and daily forecasts"""
         params = {
             'lat': lat,
             'lon': lon,
             'appid': self.api_key,
             'units': 'metric',
-            'lang': 'fr',
-            'cnt': 40  # 5 jours de prévisions (on en gardera 3)
+            'lang': 'en',
+            'cnt': 40  # 5 days of forecasts (we will keep 3)
         }
         
         url = f"{self.base_url}/forecast"
         response = requests.get(url, params=params, timeout=5)
         
         if response.status_code != 200:
-            raise Exception(f"Erreur API Forecast: {response.status_code}")
+            raise Exception(f"Forecast API error: {response.status_code}")
         
         return response.json()
     
     def search_city(self, query: str, limit: int = 5) -> list:
-        """Recherche de villes pour autocomplétion"""
+        """City search for autocomplete"""
         params = {
             'q': query,
             'limit': limit,

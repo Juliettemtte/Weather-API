@@ -3,15 +3,15 @@ from typing import List, Optional
 from datetime import datetime
 
 class CurrentWeather(BaseModel):
-    temperature: float = Field(..., description="Température actuelle en °C")
-    feels_like: float = Field(..., description="Température ressentie en °C")
-    condition: str = Field(..., description="Condition météo (ex: Clear, Clouds, Rain)")
-    condition_description: str = Field(..., description="Description détaillée")
-    icon: str = Field(..., description="Code icône OpenWeather")
-    humidity: int = Field(..., description="Humidité en %")
-    wind_speed: float = Field(..., description="Vitesse du vent en km/h")
-    precipitation_probability: int = Field(default=0, description="Probabilité de précipitations en %")
-    timestamp: datetime = Field(..., description="Horodatage des données")
+    temperature: float = Field(..., description="Temperature in°C")
+    feels_like: float = Field(..., description="Temperature feels like in °C")
+    condition: str = Field(..., description="Weather condition (e.g., Clear, Clouds, Rain)")
+    condition_description: str = Field(..., description="Detailed description")
+    icon: str = Field(..., description="OpenWeather icon code")
+    humidity: int = Field(..., description="Humidity in %")
+    wind_speed: float = Field(..., description="Wind speed in km/h")
+    precipitation_probability: int = Field(default=0, description="Precipitation probability in %")
+    timestamp: datetime = Field(..., description="Timestamp of the data")
 
 class HourlyForecast(BaseModel):
     time: datetime
@@ -39,7 +39,7 @@ class WeatherResponse(BaseModel):
     current: CurrentWeather
     hourly: List[HourlyForecast] = Field(default_factory=list, max_length=12)
     daily: List[DailyForecast] = Field(default_factory=list, max_length=3)
-    cached: bool = Field(default=False, description="Données servies depuis le cache")
+    cached: bool = Field(default=False, description="Data served from cache")
     cache_expires_at: Optional[datetime] = None
 
 class ErrorResponse(BaseModel):

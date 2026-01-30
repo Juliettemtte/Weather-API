@@ -10,7 +10,7 @@ import { WeatherResponse, CitySearchResult } from '../models/weather.model';
 export class WeatherService {
   private readonly API_URL = 'http://localhost:8000/api';
   
-  // État global de l'application
+  // Global state management
   private weatherSubject = new BehaviorSubject<WeatherResponse | null>(null);
   public weather$ = this.weatherSubject.asObservable();
   
@@ -23,7 +23,7 @@ export class WeatherService {
   constructor(private http: HttpClient) {}
 
   /**
-   * Récupère la météo par nom de ville
+   * Weather retrieval by city name
    */
   getWeatherByCity(city: string): Observable<WeatherResponse> {
     this.loadingSubject.next(true);
@@ -48,7 +48,7 @@ export class WeatherService {
   }
 
   /**
-   * Récupère la météo par coordonnées GPS
+   * Weather retrieval by GPS coordinates
    */
   getWeatherByCoordinates(lat: number, lon: number): Observable<WeatherResponse> {
     this.loadingSubject.next(true);
@@ -75,7 +75,7 @@ export class WeatherService {
   }
 
   /**
-   * Recherche de villes pour l'autocomplétion
+   * Search for cities matching the query
    */
   searchCities(query: string, limit: number = 5): Observable<any> {
     if (query.length < 2) {
@@ -99,7 +99,7 @@ export class WeatherService {
   }
 
   /**
-   * Détecte la position géographique de l'utilisateur
+   * DDetects the user's geographic location
    */
   getUserLocation(): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
@@ -136,7 +136,7 @@ export class WeatherService {
   }
 
   /**
-   * Charge la météo via géolocalisation
+   * Wather retrieval using geolocation
    */
   async loadWeatherByGeolocation(): Promise<void> {
     try {
@@ -164,7 +164,7 @@ export class WeatherService {
   }
 
   /**
-   * Réinitialise l'état
+   * Resets the state
    */
   clearError(): void {
     this.errorSubject.next(null);

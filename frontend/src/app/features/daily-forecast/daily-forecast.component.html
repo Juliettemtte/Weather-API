@@ -7,7 +7,7 @@
       class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-cyan-50 
              rounded-xl hover:shadow-md transition-all duration-200"
     >
-      <!-- Jour -->
+      <!-- Day -->
       <div class="flex-1">
         <div class="font-bold text-gray-900 capitalize">
           {{ getDayName(day.date) }}
@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <!-- Icône météo -->
+      <!-- Weather icon -->
       <div class="flex-shrink-0 mx-4">
         <img 
           [src]="getWeatherIcon(day.icon)" 
@@ -26,11 +26,11 @@
         />
       </div>
 
-      <!-- Températures -->
+      <!-- Temperatures -->
       <div class="flex items-center gap-4 flex-1 justify-end">
         <div class="text-right">
           <div class="flex items-center gap-2">
-            <!-- Pluie -->
+            <!-- Precipitation -->
             <div class="flex items-center gap-1 text-sm text-gray-600">
               <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
@@ -42,11 +42,11 @@
         
         <div class="text-right min-w-[100px]">
           <div class="flex items-center justify-end gap-3">
-            <!-- Température max -->
+            <!-- Max temperature -->
             <div class="text-2xl font-bold text-gray-900">
               {{ day.temp_max | number:'1.0-1' }}°
             </div>
-            <!-- Température min -->
+            <!-- Min temperature -->
             <div class="text-xl text-gray-500">
               {{ day.temp_min | number:'1.0-1' }}°
             </div>

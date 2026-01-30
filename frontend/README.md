@@ -1,92 +1,92 @@
-# 🌤️ Météo Express - Frontend Angular
+# 🌤️ Weather Express - Angular Frontend
 
-Application météo minimaliste et performante avec Angular 17 et TailwindCSS.
+Minimalist and performant weather application with Angular 17 and TailwindCSS.
 
-## 🚀 Installation rapide
+## 🚀 Quick Installation
 
-### Prérequis
-- Node.js 18+ et npm
-- Backend API en cours d'exécution sur `http://localhost:8000`
+### Prerequisites
+- Node.js 18+ and npm
+- Backend API running on `http://localhost:8000`
 
-### Étapes
+### Steps
 
 ```bash
-# 1. Installer les dépendances
+# 1. Install dependencies
 npm install
 
-# 2. Lancer en développement
+# 2. Run in development mode
 ng serve
 
-# 3. Ouvrir dans le navigateur
+# 3. Open in browser
 # http://localhost:4200
 ```
 
-## 📦 Structure du projet
+## 📦 Project Structure
 
 ```
 src/app/
 ├── core/
-│   ├── models/          # Interfaces TypeScript
-│   └── services/        # Services Angular (HTTP, cache)
+│   ├── models/          # TypeScript interfaces
+│   └── services/        # Angular services (HTTP, cache)
 ├── features/
-│   ├── search/          # Composant recherche
-│   ├── current-weather/ # Météo actuelle
-│   ├── hourly-forecast/ # Prévisions horaires
-│   └── daily-forecast/  # Prévisions 3 jours
+│   ├── search/          # Search component
+│   ├── current-weather/ # Current weather
+│   ├── hourly-forecast/ # Hourly forecasts
+│   └── daily-forecast/  # 3-day forecasts
 ├── shared/
-│   └── utils/           # Utilitaires (favoris, etc.)
-└── app.component.ts     # Composant racine
+│   └── utils/           # Utilities (favorites, etc.)
+└── app.component.ts     # Root component
 ```
 
-## ✨ Fonctionnalités
+## ✨ Features
 
-### ✅ Implémentées
-- 🔍 Recherche de ville avec autocomplétion
-- 📍 Géolocalisation automatique
-- ⭐ Sauvegarde d'une ville favorite (localStorage)
-- 🌡️ Affichage météo actuelle détaillée
-- 📊 Graphique des prévisions horaires (Chart.js)
-- 📅 Prévisions sur 3 jours
-- ⚡ Indicateur de cache (données en cache)
-- 📱 Design responsive mobile-first
-- 🎨 Interface minimaliste TailwindCSS
+### ✅ Implemented
+- 🔍 City search with autocomplete
+- 📍 Automatic geolocation
+- ⭐ Save favorite city (localStorage)
+- 🌡️ Detailed current weather display
+- 📊 Hourly forecast chart (Chart.js)
+- 📅 3-day forecasts
+- ⚡ Cache indicator (cached data)
+- 📱 Mobile-first responsive design
+- 🎨 Minimalist TailwindCSS interface
 
-### 🎯 Expérience utilisateur
-- Chargement < 500ms (avec cache backend)
-- Animations fluides (fade-in, slide-up)
-- Feedback visuel clair (loading, erreurs)
-- Aucune publicité ni contenu superflu
+### 🎯 User Experience
+- Loading < 500ms (with backend cache)
+- Smooth animations (fade-in, slide-up)
+- Clear visual feedback (loading, errors)
+- No ads or unnecessary content
 
 ## 🎨 Design System
 
-### Couleurs principales
+### Main Colors
 - **Primary Blue**: `#0ea5e9` (Tailwind sky-500)
 - **Background**: Gradient `blue-50` to `cyan-50`
-- **Text**: Gray 900 pour titres, Gray 600 pour secondaire
+- **Text**: Gray 900 for titles, Gray 600 for secondary
 
-### Composants
-- **Cards**: Fond blanc, ombres douces, coins arrondis (rounded-2xl)
-- **Inputs**: Bordures fines, focus bleu avec ring
-- **Buttons**: Transitions 200ms, hover states
+### Components
+- **Cards**: White background, soft shadows, rounded corners (rounded-2xl)
+- **Inputs**: Thin borders, blue focus with ring
+- **Buttons**: 200ms transitions, hover states
 
 ## 🔧 Configuration
 
-### Changer l'URL de l'API
+### Change API URL
 
-Modifier `src/app/core/services/weather.service.ts`:
+Edit `src/app/core/services/weather.service.ts`:
 
 ```typescript
 private readonly API_URL = 'http://localhost:8000/api';
-// Changer pour votre URL de production
+// Change to your production URL
 ```
 
-Ou utiliser les environments:
+Or use environments:
 - `src/environments/environment.ts` (dev)
 - `src/environments/environment.prod.ts` (prod)
 
-### Personnaliser le thème
+### Customize Theme
 
-Modifier `tailwind.config.js` pour ajuster les couleurs:
+Edit `tailwind.config.js` to adjust colors:
 
 ```javascript
 theme: {
@@ -101,41 +101,41 @@ theme: {
 }
 ```
 
-## 📊 Performances
+## 📊 Performance
 
-### Métriques cibles
+### Target Metrics
 - **First Contentful Paint**: < 1.5s
 - **Largest Contentful Paint**: < 2.5s
 - **Time to Interactive**: < 3.5s
 - **Lighthouse Score**: > 90
 
-### Optimisations appliquées
-- Standalone components (réduction bundle)
-- Lazy loading (futures routes)
-- OnPush change detection (prêt pour usage)
-- Debounce sur recherche (300ms)
-- Cache côté service avec RxJS
+### Applied Optimizations
+- Standalone components (bundle reduction)
+- Lazy loading (future routes)
+- OnPush change detection (ready for use)
+- Search debounce (300ms)
+- Service-side cache with RxJS
 
-## 🧪 Tests (à implémenter)
+## 🧪 Testing (to implement)
 
 ```bash
-# Tests unitaires
+# Unit tests
 ng test
 
-# Tests e2e
+# E2E tests
 ng e2e
 ```
 
-## 🏗️ Build de production
+## 🏗️ Production Build
 
 ```bash
-# Build optimisé
+# Optimized build
 ng build --configuration production
 
-# Les fichiers sont dans dist/weather-app/
+# Files are in dist/weather-app/
 ```
 
-### Déploiement
+### Deployment
 
 **Netlify / Vercel:**
 ```bash
@@ -146,7 +146,7 @@ ng build --configuration production
 dist/weather-app
 ```
 
-**Configuration `netlify.toml` ou `vercel.json`:**
+**`netlify.toml` or `vercel.json` configuration:**
 ```toml
 [[redirects]]
   from = "/*"
@@ -154,9 +154,9 @@ dist/weather-app
   status = 200
 ```
 
-## 🔐 Variables d'environnement
+## 🔐 Environment Variables
 
-Pour la production, créer `.env` ou configurer via votre plateforme:
+For production, create `.env` or configure via your platform:
 
 ```bash
 API_URL=https://your-backend-api.com/api
@@ -164,43 +164,43 @@ API_URL=https://your-backend-api.com/api
 
 ## 🐛 Debugging
 
-### Problèmes courants
+### Common Issues
 
 **CORS Error:**
-- Vérifier que le backend autorise `http://localhost:4200`
-- Voir `CORS_ORIGINS` dans le backend `.env`
+- Verify that backend allows `http://localhost:4200`
+- Check `CORS_ORIGINS` in backend `.env`
 
-**API non accessible:**
-- Vérifier que le backend est lancé
-- Tester l'endpoint: `curl http://localhost:8000/health`
+**API not accessible:**
+- Verify that backend is running
+- Test endpoint: `curl http://localhost:8000/health`
 
-**Graphique ne s'affiche pas:**
-- Vérifier l'installation de Chart.js: `npm list chart.js`
-- Vérifier les données dans la console: `console.log(this.hourly)`
+**Chart not displaying:**
+- Verify Chart.js installation: `npm list chart.js`
+- Check data in console: `console.log(this.hourly)`
 
-## 📈 Prochaines améliorations (post-MVP)
+## 📈 Future Improvements (post-MVP)
 
-- [ ] Mode sombre (dark mode)
-- [ ] Multi-villes favorites (jusqu'à 5)
-- [ ] Notifications push
+- [ ] Dark mode
+- [ ] Multiple favorite cities (up to 5)
+- [ ] Push notifications
 - [ ] PWA (Progressive Web App)
-- [ ] Tests unitaires avec Jasmine
-- [ ] Animations avancées (GSAP)
-- [ ] Graphiques interactifs (ApexCharts)
-- [ ] Export données (CSV/PDF)
+- [ ] Unit tests with Jasmine
+- [ ] Advanced animations (GSAP)
+- [ ] Interactive charts (ApexCharts)
+- [ ] Data export (CSV/PDF)
 
-## 🤝 Contribution
+## 🤝 Contributing
 
-1. Fork le projet
-2. Créer une branche (`git checkout -b feature/AmazingFeature`)
+1. Fork the project
+2. Create a branch (`git checkout -b feature/AmazingFeature`)
 3. Commit (`git commit -m 'Add AmazingFeature'`)
 4. Push (`git push origin feature/AmazingFeature`)
-5. Ouvrir une Pull Request
+5. Open a Pull Request
 
-## 📄 Licence
+## 📄 License
 
-MIT License - voir le fichier LICENSE pour plus de détails.
+MIT License - see LICENSE file for details.
 
 ---
 
-**Fait avec ❤️ et Angular 17**
+**Made with ❤️ and Angular 17**
