@@ -4,7 +4,7 @@ This repository contains a complete weather application with a Python FastAPI ba
 
 ## Demo
 <video width="100%" controls>
-  <source src="demo/Weather.mp4mp4" type="video/mp4">
+  <source src="demo/Weather.mp4" type="video/mp4">
 </video>
 
 
