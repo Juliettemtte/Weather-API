@@ -49,12 +49,22 @@
       </button>
     </div>
     
-    <!-- Résultats de recherche -->
+    <!-- Search results dropdown -->
     <div 
-      *ngIf="showResults && searchResults.length > 0"
+      *ngIf="showResults"
       class="absolute z-50 w-full mt-2 bg-white rounded-xl shadow-lg border border-gray-100 
              overflow-hidden animate-fade-in"
     >
+      <!-- Loading state -->
+      <div 
+        *ngIf="isSearching && searchResults.length === 0"
+        class="px-4 py-3 text-gray-500 text-sm flex items-center gap-2"
+      >
+        <div class="spinner-small"></div>
+        <span>Loading cities...</span>
+      </div>
+
+      <!-- Results list -->
       <div 
         *ngFor="let city of searchResults"
         (click)="selectCity(city)"
@@ -66,15 +76,14 @@
           {{ city.state ? city.state + ', ' : '' }}{{ city.country }}
         </div>
       </div>
-    </div>
-    
-    <!-- Aucun résultat -->
-    <div 
-      *ngIf="showResults && searchResults.length === 0 && searchQuery.length >= 2 && !isSearching"
-      class="absolute z-50 w-full mt-2 bg-white rounded-xl shadow-lg border border-gray-100 
-             px-4 py-3 text-gray-500 text-sm"
-    >
-      Aucune ville trouvée
+
+      <!-- No results message -->
+      <div 
+        *ngIf="!isSearching && searchResults.length === 0 && searchQuery.length >= 2"
+        class="px-4 py-3 text-gray-500 text-sm"
+      >
+        No cities found
+      </div>
     </div>
   </div>
 </div>

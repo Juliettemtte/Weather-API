@@ -21,35 +21,47 @@ export class SearchComponent {
   isSearching = false;
   
   private searchSubject = new Subject<string>();
+  private currentSearchQuery = '';
 
   constructor(private weatherService: WeatherService) {
-    // Debounce pour éviter trop de requêtes
+    // Debounce to avoid too many requests (reduced to 100ms for faster updates)
     this.searchSubject.pipe(
-      debounceTime(300),
+      debounceTime(100),
       distinctUntilChanged(),
       switchMap(query => {
+        this.currentSearchQuery = query;
         if (query.length < 2) {
           this.searchResults = [];
           this.showResults = false;
           return [];
         }
         this.isSearching = true;
+        this.showResults = true;
         return this.weatherService.searchCities(query);
       })
     ).subscribe({
       next: (response) => {
-        this.searchResults = response.results || [];
-        this.showResults = this.searchResults.length > 0;
-        this.isSearching = false;
+        // Only update results if this response matches the current search query
+        if (this.currentSearchQuery === this.searchQuery) {
+          this.searchResults = response.results || [];
+          this.showResults = true;
+          this.isSearching = false;
+        }
       },
       error: () => {
         this.isSearching = false;
-        this.searchResults = [];
+        this.showResults = true;
       }
     });
   }
 
   onSearchInput(): void {
+    if (this.searchQuery.length >= 2) {
+      this.showResults = true;
+    } else {
+      this.showResults = false;
+      this.searchResults = [];
+    }
     this.searchSubject.next(this.searchQuery);
   }
 
@@ -62,6 +74,10 @@ export class SearchComponent {
   useGeolocation(): void {
     this.weatherService.loadWeatherByGeolocation().catch(error => {
       console.error('Geolocation error:', error);
+      // Auto-dismiss geolocation errors after 3 seconds since they're not critical
+      setTimeout(() => {
+        this.weatherService.clearError();
+      }, 3000);
     });
   }
 

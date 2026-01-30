@@ -108,9 +108,14 @@ export class WeatherService {
         return;
       }
       
+      console.log('Requesting geolocation...');
       navigator.geolocation.getCurrentPosition(
-        position => resolve(position),
+        position => {
+          console.log('Geolocation success:', position);
+          resolve(position);
+        },
         error => {
+          console.error('Geolocation error code:', error.code, 'message:', error.message);
           let message = 'Geolocation error';
           switch(error.code) {
             case error.PERMISSION_DENIED:
@@ -125,7 +130,7 @@ export class WeatherService {
           }
           reject(new Error(message));
         },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        { timeout: 5000 }
       );
     });
   }
@@ -136,11 +141,23 @@ export class WeatherService {
   async loadWeatherByGeolocation(): Promise<void> {
     try {
       const position = await this.getUserLocation();
+      console.log('Got position:', position.coords.latitude, position.coords.longitude);
+      
+      // Subscribe to the weather request and handle both success and error
       this.getWeatherByCoordinates(
         position.coords.latitude,
         position.coords.longitude
-      ).subscribe();
+      ).subscribe({
+        next: (data) => {
+          console.log('Weather loaded successfully:', data);
+        },
+        error: (error) => {
+          console.error('Error loading weather by coordinates:', error);
+          this.errorSubject.next(error.message);
+        }
+      });
     } catch (error: any) {
+      console.error('Geolocation error in loadWeatherByGeolocation:', error);
       this.errorSubject.next(error.message);
       throw error;
     }
