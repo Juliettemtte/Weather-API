@@ -1,4 +1,4 @@
-# Weather API — Full Project
+# Weather API
 
 This repository contains a complete weather application with a Python FastAPI backend and an Angular frontend. The project is configured to run with Docker Compose (Redis + backend + frontend).
 
@@ -77,15 +77,9 @@ npm run start
 
 Ensure `API_URL` points to the running API.
 
-## Tests & Quality
-- If tests exist, run them according to the backend or frontend instructions.
-
 ## Deployment
 - The project is container-ready; adapt Docker/CI configuration for your deployment target.
 - Secure secrets and API keys via environment management in production.
-
-## Contribution
-- Fork the repo, create a feature branch, open a pull request with a clear description of changes.
 
 ## License
 This repository includes a restrictive license file. See `LICENSE` for details.
