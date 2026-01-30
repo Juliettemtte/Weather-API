@@ -3,9 +3,7 @@
 This repository contains a complete weather application with a Python FastAPI backend and an Angular frontend. The project is configured to run with Docker Compose (Redis + backend + frontend).
 
 ## Demo
-<video width="100%" controls>
-  <source src="demo/Weather.mp4" type="video/mp4">
-</video>
+https://github.com/user-attachments/assets/4f7cca67-20d0-4ba3-9168-672a15edc0c6
 
 
 ## Overview
