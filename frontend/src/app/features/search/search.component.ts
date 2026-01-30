@@ -74,7 +74,7 @@ export class SearchComponent {
   useGeolocation(): void {
     this.weatherService.loadWeatherByGeolocation().catch(error => {
       console.error('Geolocation error:', error);
-      // Auto-dismiss geolocation errors after 3 seconds since they're not critical
+      // Auto-dismiss  errors after 3 seconds since they're not critical
       setTimeout(() => {
         this.weatherService.clearError();
       }, 3000);
